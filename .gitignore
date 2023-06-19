@@ -1,0 +1,10 @@
+vendor
+.idea
+composer.lock
+
+/node_modules
+/logs/
+
+/public/storage/
+.env
+/App/Config.php
