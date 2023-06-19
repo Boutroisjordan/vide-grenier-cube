@@ -14,19 +14,16 @@ services:
       - "3306:3306"
     volumes:
       - ./data/mysql:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
 
-  project:
+  apache:
     build:
-        context: .
-        dockerfile: dockerFile.yml
-    container_name: project
+      context: .
+      dockerfile: dockerFile.yml
+    container_name: apache
     ports:
-      - "8080:8080"
-    command: >
-      bash -c "
-        git clone https://github.com/Boutroisjordan/vide-grenier-cube.git /app
-        npm install
-        npm run build
-        composer update
-        php -S 0.0.0.0:8080 -t public
-      "
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - mySql
