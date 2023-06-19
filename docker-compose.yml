@@ -25,6 +25,7 @@ services:
     command: >
       bash -c "
         git clone https://github.com/Boutroisjordan/vide-grenier-cube.git /app
+        git checkout ${GIT_BRANCH}
         npm install
         npm run build
         composer update
