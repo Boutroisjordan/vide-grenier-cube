@@ -7,3 +7,4 @@ vendor
 /public/storage/
 .env
 /App/Config.php
+/data/
