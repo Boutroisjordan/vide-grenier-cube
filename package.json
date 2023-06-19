@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node-sass -w style -o public/style",
+    "build": "sass --no-source-map style public/style",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "node-sass": "^9.0.0"
+  "dependencies": {
+    "node-gyp": "^9.4.0",
+    "sass": "^1.63.4"
   }
 }

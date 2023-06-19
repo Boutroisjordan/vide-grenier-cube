@@ -20,17 +20,5 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
   # Set the working directory
 WORKDIR /app
 
-  # Clone the repository
-RUN git clone https://github.com/Boutroisjordan/vide-grenier-cube.git /app
-  
-  # Install Node dependencies
-RUN npm install node-gyp -g
-RUN npm uninstall node-sass && npm install sass
-RUN npm install
-
-  # Install PHP dependencies
-RUN composer update
-    
-  # Install Node dependencies
 
 CMD [ "php", "-S", "0.0.0.0:8080", "-t", "public" ]

@@ -22,3 +22,8 @@ services:
     container_name: project
     ports:
       - "8080:8080"
+    command: >
+      git clone https://github.com/Boutroisjordan/vide-grenier-cube.git /app
+      npm install
+      npm run build
+      composer update
