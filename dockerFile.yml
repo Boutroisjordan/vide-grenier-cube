@@ -29,7 +29,7 @@ RUN npm uninstall node-sass && npm install sass
 RUN npm install
 
   # Install PHP dependencies
-RUN composer install --no-scripts --no-autoloader
+RUN composer update
     
   # Install Node dependencies
 
