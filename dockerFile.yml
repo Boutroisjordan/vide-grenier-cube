@@ -1,0 +1,36 @@
+FROM node:16
+  
+  # Install system dependencies
+RUN apt-get update && apt-get install -y \
+curl \
+git \
+zip \
+unzip
+  
+  # Install PHP and Composer
+RUN apt -y install software-properties-common
+RUN apt -y install lsb-release apt-transport-https ca-certificates
+RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list
+RUN apt-get update
+RUN apt -y install php7.4
+RUN php -v
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+  # Set the working directory
+WORKDIR /app
+
+  # Clone the repository
+RUN git clone https://github.com/Boutroisjordan/vide-grenier-cube.git /app
+  
+  # Install Node dependencies
+RUN npm install node-gyp -g
+RUN npm uninstall node-sass && npm install sass
+RUN npm install
+
+  # Install PHP dependencies
+RUN composer install --no-scripts --no-autoloader
+    
+  # Install Node dependencies
+
+CMD [ "php", "-S", "0.0.0.0:8080", "-t", "public" ]
