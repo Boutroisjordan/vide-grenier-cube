@@ -1,8 +1,8 @@
 vendor
 .idea
 
-/node_modules
 /logs/
+/node_modules
 
 /public/storage/
 .env
