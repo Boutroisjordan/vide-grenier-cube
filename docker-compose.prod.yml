@@ -22,9 +22,9 @@ services:
       context: .
       dockerfile: dockerFile.prod.yml
     container_name: apache
-    environment:
-      - COMPOSE_PROJECT_NAME=mon_environnement
     ports:
       - "8080:80"
+    volumes:
+      - ./:/var/www/html
     depends_on:
       - mySql

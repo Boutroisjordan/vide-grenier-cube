@@ -1,4 +1,4 @@
-  FROM php:7.4-apache
+FROM php:8.1-apache
     
     # Installer Git, Node.js, et les dépendances système
     RUN apt-get update && apt-get install -y \
@@ -35,7 +35,7 @@
     ADD package*.json /var/www/html
     
     # Installer les dépendances Node.js
-    RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
     RUN apt-get install -y nodejs
     RUN npm install
     
