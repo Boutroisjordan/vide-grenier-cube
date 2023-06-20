@@ -1,0 +1,105 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Vide Grenier API",
+        "description": "API pour le site web Vide Grenier",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "email": "contact@mysite.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/product": {
+            "get": {
+                "operationId": "f9f26b3adbbcf25f2ea1403284fd1881",
+                "responses": {
+                    "200": {
+                        "description": "On récupère tous les produits/articles pour la page d'accueil"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "5087812e438e5a4da938f89ace9ad772",
+                "responses": {
+                    "200": {
+                        "description": "Méthode post du produit"
+                    }
+                }
+            }
+        },
+        "/search": {
+            "get": {
+                "operationId": "ae2fa66573c0ef6b042c13c67177b2e2",
+                "responses": {
+                    "200": {
+                        "description": "On recherche dans la liste des villes"
+                    }
+                }
+            }
+        },
+        "/product/{id}": {
+            "get": {
+                "operationId": "f445e04846c89947cd822920281c420c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the product to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "On récupère un produit spécifique par son identifiant"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "operationId": "d4181362f8fbe88f6a6105eb4561f5f0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Connexion de l'utilisateur"
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "operationId": "1bbc8782abb5c285c2903931d316b6a2",
+                "responses": {
+                    "200": {
+                        "description": "On récupère tous les produits/articles pour la page d'accueil"
+                    }
+                }
+            }
+        }
+    }
+}
