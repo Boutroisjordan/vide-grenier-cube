@@ -1,0 +1,6 @@
+vendor
+data
+logs
+node_modules
+.vscode
+.idea
