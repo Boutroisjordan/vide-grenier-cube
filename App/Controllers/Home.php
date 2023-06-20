@@ -18,9 +18,10 @@ class Home extends \Core\Controller
      * @return void
      * @throws \Exception
      */
-    public function indexAction()
+    public function index()
     {
-
+        var_dump("azdazfdazf");
+        var_dump("azdazfdazf");
         View::renderTemplate('Home/index.html', []);
     }
 }

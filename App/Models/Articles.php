@@ -3,10 +3,8 @@
 namespace App\Models;
 
 use Core\Model;
-use App\Core;
 use DateTime;
 use Exception;
-use App\Utility;
 
 /**
  * Articles Model
@@ -22,7 +20,7 @@ class Articles extends Model {
     public static function getAll($filter) {
         $db = static::getDB();
 
-        $query = 'SELECT * FROM articles ';
+        $query = 'SELECT * FROM articles';
 
         switch ($filter){
             case 'views':
@@ -30,8 +28,6 @@ class Articles extends Model {
                 break;
             case 'data':
                 $query .= ' ORDER BY articles.published_date DESC';
-                break;
-            case '':
                 break;
         }
 
@@ -69,12 +65,13 @@ class Articles extends Model {
     public static function addOneView($id) {
         $db = static::getDB();
 
-        $stmt = $db->prepare('
-            UPDATE articles 
-            SET articles.views = articles.views + 1
-            WHERE articles.id = ?');
+        $stmt = $db->prepare(
+            'UPDATE articles SET views = views + 1 WHERE id = ?'
+        );
 
         $stmt->execute([$id]);
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     /**
@@ -89,7 +86,8 @@ class Articles extends Model {
         $stmt = $db->prepare('
             SELECT *, articles.id as id FROM articles
             LEFT JOIN users ON articles.user_id = users.id
-            WHERE articles.user_id = ?');
+            WHERE articles.user_id = ?
+        ');
 
         $stmt->execute([$id]);
 
@@ -105,10 +103,11 @@ class Articles extends Model {
     public static function getSuggest() {
         $db = static::getDB();
 
-        $stmt = $db->prepare('
+        $stmt = $db->prepare(`
             SELECT *, articles.id as id FROM articles
             INNER JOIN users ON articles.user_id = users.id
-            ORDER BY published_date DESC LIMIT 10');
+            ORDER BY published_date DESC LIMIT 10
+        `);
 
         $stmt->execute();
 
@@ -126,7 +125,10 @@ class Articles extends Model {
     public static function save($data) {
         $db = static::getDB();
 
-        $stmt = $db->prepare('INSERT INTO articles(name, description, user_id, published_date) VALUES (:name, :description, :user_id,:published_date)');
+        $stmt = $db->prepare(`
+            INSERT INTO articles(name, description, user_id, published_date)
+            VALUES (:name, :description, :user_id,:published_date)
+        `);
 
         $published_date =  new DateTime();
         $published_date = $published_date->format('Y-m-d');
@@ -143,7 +145,10 @@ class Articles extends Model {
     public static function attachPicture($articleId, $pictureName){
         $db = static::getDB();
 
-        $stmt = $db->prepare('UPDATE articles SET picture = :picture WHERE articles.id = :articleid');
+        $stmt = $db->prepare('
+            UPDATE articles SET picture = :picture
+            WHERE articles.id = :articleid
+        ');
 
         $stmt->bindParam(':picture', $pictureName);
         $stmt->bindParam(':articleid', $articleId);
@@ -151,8 +156,4 @@ class Articles extends Model {
 
         $stmt->execute();
     }
-
-
-
-
 }

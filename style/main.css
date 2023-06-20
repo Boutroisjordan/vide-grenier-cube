@@ -3016,8 +3016,8 @@ footer .f-lang .btn-default {
 /*
 * Content Upload END
 */
-body {
-  width: 100vw !important;
-  height: 100vh !important;
-  overflow: hidden !important;
+html {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }

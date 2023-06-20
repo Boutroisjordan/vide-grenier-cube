@@ -18,7 +18,7 @@ class Api extends \Core\Controller
      *
      * @throws Exception
      */
-    public function ProductsAction()
+    public function Product()
     {
         $query = $_GET['sort'];
 

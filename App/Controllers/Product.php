@@ -16,7 +16,7 @@ class Product extends \Core\Controller
      * Affiche la page d'ajout
      * @return void
      */
-    public function indexAction()
+    public function Send()
     {
 
         if(isset($_POST['submit'])) {
@@ -46,7 +46,7 @@ class Product extends \Core\Controller
      * Affiche la page d'un produit
      * @return void
      */
-    public function showAction()
+    public function show()
     {
         $id = $this->route_params['id'];
 

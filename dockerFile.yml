@@ -22,16 +22,21 @@ WORKDIR /var/www/html
 # Clone the repository
 # RUN git clone https://github.com/Boutroisjordan/vide-grenier-cube.git .
 
-COPY . /var/www/html
+ADD package*.json /var/www/html
 
 # Installer les dépendances Node.js
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
 RUN npm install
 
+
+ADD composer.* /var/www/html
+
 # Installer les dépendances PHP avec Composer
 RUN composer install --no-dev --optimize-autoloader
 RUN composer update
+
+ADD . /var/www/html
 
 # Définir les permissions pour les fichiers du projet
 RUN chown -R www-data:www-data /var/www/html

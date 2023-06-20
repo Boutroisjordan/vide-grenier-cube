@@ -41,7 +41,7 @@ class Router
         // Convert variables with custom regular expressions e.g. {id:\d+}
         $route = preg_replace('/\{([a-z]+):([^\}]+)\}/', '(?P<\1>\2)', $route);
 
-        // Add start and end delimiters, and case insensitive flag
+        // Ajout de la contrainte pour le format de l'URL
         $route = '/^' . $route . '$/i';
 
         $this->routes[$route] = $params;
@@ -65,7 +65,7 @@ class Router
      *
      * @return boolean  true if a match found, false otherwise
      */
-    public function match($url)
+    public function match(string $url): bool
     {
         foreach ($this->routes as $route => $params) {
             if (preg_match($route, $url, $matches)) {

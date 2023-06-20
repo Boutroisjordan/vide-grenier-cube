@@ -56,16 +56,14 @@
 
 
 {% block javascript %}
-    <script type="text/javascript">
+    <script type="text/javascript" defer>
 
-        function getProductsAndRender(option = ''){
+        function getProductsAndRender(option = null){
+            console.log("hola");
             $.ajax({
-                url: "/api/products" + '?sort=' + option,
+                url: "/api/products" + option ? "?sort=" + option : "",
             }).done(function(result) {
-                $('#articlelist').empty();
-                for(let i = 0; i < result.length; i++){
-                    renderProduct(result[i])
-                }
+                console.log(result);
             });
         }
 
