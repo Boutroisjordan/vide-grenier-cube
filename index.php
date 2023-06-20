@@ -27,16 +27,6 @@ set_exception_handler('Core\Error::exceptionHandler');
  */
 $router = new Core\Router();
 
-// Add the routes
-$router->add('', ['controller' => 'Home', 'action' => 'index']);
-$router->add('login', ['controller' => 'User', 'action' => 'login']);
-$router->add('register', ['controller' => 'User', 'action' => 'register']);
-$router->add('logout', ['controller' => 'User', 'action' => 'logout', 'private' => true]);
-$router->add('account', ['controller' => 'User', 'action' => 'account', 'private' => true]);
-$router->add('product', ['controller' => 'Product', 'action' => 'index', 'private' => true]);
-$router->add('product/{id:\d+}', ['controller' => 'Product', 'action' => 'show']);
-$router->add('{controller}/{action}');
-
 /*
  * Gestion des erreurs dans le routing
  */
