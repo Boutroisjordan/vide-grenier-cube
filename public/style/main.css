@@ -2045,14 +2045,11 @@ footer .f-lang .btn-default {
 
 .login-wraper {
   position: relative;
-}
-.login-wraper .login-window {
-  position: absolute;
-  width: 570px;
-  top: 50%;
-  left: 50%;
-  margin-left: -2px;
-  margin-top: -288px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 0.5rem;
 }
 .login-wraper .login-window .l-head {
   background-color: #ffffff;
@@ -2125,14 +2122,6 @@ footer .f-lang .btn-default {
   text-decoration: underline;
 }
 
-.banner-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -50px;
-  margin-left: -580px;
-  width: 550px;
-}
 .banner-text .line {
   height: 1px;
   border-top: solid 1px #ea2c5a;
@@ -2140,10 +2129,10 @@ footer .f-lang .btn-default {
   width: 280px;
 }
 .banner-text .b-text {
-  color: #ffffff;
   font-size: 80px;
   text-align: left;
   line-height: 80px;
+  color: #b7135d;
 }
 .banner-text .b-text .color-b1 {
   color: #b7135d;
@@ -2162,11 +2151,6 @@ footer .f-lang .btn-default {
 
 @media (min-width: 100px) and (max-width: 1365px) {
   .banner-text {
-    position: relative;
-    top: 0;
-    left: 0;
-    margin-top: 0;
-    margin-left: 0;
     width: auto;
   }
   .banner-text .line {
@@ -2183,6 +2167,10 @@ footer .f-lang .btn-default {
     margin: 15px 0;
     color: #a1a1a1;
     text-align: center;
+  }
+  .login-wraper {
+    display: flex;
+    flex-direction: column;
   }
   .login-wraper .login-window {
     position: relative;
