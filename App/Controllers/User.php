@@ -86,7 +86,7 @@ class User extends \Core\Controller
                 "password" => Hash::generate($data['password'], $salt),
                 "salt" => $salt
             ]);
-
+            // dd($user)
             return $userID;
 
         } catch (Exception $ex) {

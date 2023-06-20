@@ -64,6 +64,7 @@
             }).done(function(result) {
                 $('#articlelist').empty();
                 for(let i = 0; i < result.length; i++){
+
                     renderProduct(result[i])
                 }
             });

@@ -28,14 +28,26 @@ COPY . /var/www/html
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
 RUN npm install
-RUN npm run build
 
 # Installer les dépendances PHP avec Composer
 RUN composer install --no-dev --optimize-autoloader
 RUN composer update
 
+
+
 # Définir les permissions pour les fichiers du projet
 RUN chown -R www-data:www-data /var/www/html
+
+# Activer la PDO PHP
+# RUN php -m|grep -i pdo_mysql
+
+RUN apt-get update && apt-get install -y \
+  libfreetype6-dev \
+  libjpeg62-turbo-dev \
+  libpng-dev \
+  && docker-php-ext-configure gd --with-freetype --with-jpeg \
+  && docker-php-ext-install -j$(nproc) gd \
+  && docker-php-ext-install pdo_mysql
 
 # Exposer le port 80 (Apache)
 EXPOSE 80
