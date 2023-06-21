@@ -58,6 +58,7 @@ FROM base as git
     # Cloner le projet
     RUN git clone https://github.com/Boutroisjordan/vide-grenier-cube.git /var/www/html
     RUN git config --global --add safe.directory /var/www/html
+    RUN git fetch
   
     # Ajouter les fichiers du projet
     ADD ./App/Config.php /var/www/html/App/Config.php
