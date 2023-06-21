@@ -10,6 +10,21 @@ use Exception;
 /**
  * API controller
  */
+/**
+ * @OA\Info(
+ *   title="Vide Grenier API",
+ *   version="1.0",
+ *   description="API pour le site web Vide Grenier",
+ *   termsOfService="http://swagger.io/terms/",
+ *   @OA\Contact(
+ *     email="contact@mysite.com",
+ *   ),
+ *   @OA\License(
+ *     name="Apache 2.0",
+ *     url="http://www.apache.org/licenses/LICENSE-2.0.html"
+ *   )
+ * )
+ */
 class Api extends \Core\Controller
 {
 
@@ -17,6 +32,13 @@ class Api extends \Core\Controller
      * Affiche la liste des articles / produits pour la page d'accueil
      *
      * @throws Exception
+     */
+
+    /**
+     * @OA\Get(
+     *     path="/product",
+     *     @OA\Response(response="200", description="On récupère tous les produits/articles pour la page d'accueil")
+     * )
      */
     public function ProductsAction()
     {
@@ -33,7 +55,15 @@ class Api extends \Core\Controller
      *
      * @throws Exception
      */
-    public function CitiesAction(){
+
+    /**
+     * @OA\Get(
+     *     path="/search",
+     *     @OA\Response(response="200", description="On recherche dans la liste des villes")
+     * )
+     */
+    public function CitiesAction()
+    {
 
         $cities = Cities::search($_GET['query']);
 

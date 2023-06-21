@@ -16,10 +16,17 @@ class Product extends \Core\Controller
      * Affiche la page d'ajout
      * @return void
      */
+
+    /**
+     * @OA\Post(
+     *     path="/product",
+     *     @OA\Response(response="200", description="Méthode post du produit")
+     * )
+     */
     public function indexAction()
     {
 
-        if(isset($_POST['submit'])) {
+        if (isset($_POST['submit'])) {
 
             try {
                 $f = $_POST;
@@ -34,8 +41,8 @@ class Product extends \Core\Controller
                 Articles::attachPicture($id, $pictureName);
 
                 header('Location: /product/' . $id);
-            } catch (\Exception $e){
-                    var_dump($e);
+            } catch (\Exception $e) {
+                var_dump($e);
             }
         }
 
@@ -46,6 +53,23 @@ class Product extends \Core\Controller
      * Affiche la page d'un produit
      * @return void
      */
+
+    /**
+     * @OA\Get(
+     *     path="/product/{id}",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the product to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(response="200", description="On récupère un produit spécifique par son identifiant")
+     * )
+     */
+
     public function showAction()
     {
         $id = $this->route_params['id'];
@@ -54,7 +78,7 @@ class Product extends \Core\Controller
             Articles::addOneView($id);
             $suggestions = Articles::getSuggest();
             $article = Articles::getOne($id);
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             var_dump($e);
         }
 
