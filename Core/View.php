@@ -2,6 +2,13 @@
 
 namespace Core;
 
+use App\Utility\TwigLoader;
+use Twig\Environment;
+use Twig\Extension\DebugExtension;
+use Twig\Loader\Filesystemloader;
+
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+
 /**
  * View
  *
@@ -44,9 +51,7 @@ class View
         static $twig = null;
 
         if ($twig === null) {
-            $loader = new \Twig\Loader\Filesystemloader(dirname(__DIR__) . '/App/Views');
-            $twig = new \Twig\Environment($loader, ['debug' => true,]);
-            $twig->addExtension(new \Twig\Extension\DebugExtension());
+            $twig = TwigLoader::getTwigEnvironment();
         }
 
         echo $twig->render($template, View::setDefaultVariables($args));

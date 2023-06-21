@@ -19,12 +19,11 @@ services:
 
   apache:
     build:
-      context: .
-      dockerfile: dockerFile.yml
+        context: .
+        dockerfile: dockerfile.yml
+        target: ${APP_ENV}
     container_name: apache
     ports:
       - "8080:80"
-    volumes:
-      - ./:/var/www/html
     depends_on:
       - mySql
