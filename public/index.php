@@ -6,12 +6,22 @@
  * PHP version 7.0
  */
 
+use App\Utility\TwigLoader;
+use Twig\Environment;
+use Twig\Extension\DebugExtension;
+use Twig\Loader\FilesystemLoader;
+
 session_start();
 
 /**
  * Composer
  */
-require dirname(__DIR__) . '/vendor/autoload.php';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+$loader = new Filesystemloader(dirname(__DIR__) . '/App/Views');
+$twig = new Environment($loader, ['debug' => true,]);
+$twig->addExtension(new DebugExtension());
+
+TwigLoader::setTwigEnvironment($twig);
 
 
 /**
@@ -33,10 +43,7 @@ $router = new Core\Router();
 try {
     $router->dispatch($_SERVER['QUERY_STRING']);
 } catch(Exception $e){
-    switch($e->getMessage()){
-        case 'You must be logged in':
-            header('Location: /login');
-            break;
+    if ($e->getMessage() == 'You must be logged in') {
+        header('Location: /login');
     }
 }
-?>
