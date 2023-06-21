@@ -40,6 +40,7 @@ class Product extends \Core\Controller
 
                 Articles::attachPicture($id, $pictureName);
 
+                http_response_code(200);
                 header('Location: /product/' . $id);
             } catch (\Exception $e) {
                 var_dump($e);

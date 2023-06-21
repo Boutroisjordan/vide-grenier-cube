@@ -32,9 +32,20 @@
                 }
             }
         },
-        "/search": {
+        "/api/cities": {
             "get": {
-                "operationId": "ae2fa66573c0ef6b042c13c67177b2e2",
+                "operationId": "2eb40167ed3bbca45fd0aef24f40b491",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "Requête de recherche",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "On recherche dans la liste des villes"
@@ -87,16 +98,6 @@
                 "responses": {
                     "200": {
                         "description": "Connexion de l'utilisateur"
-                    }
-                }
-            }
-        },
-        "/register": {
-            "post": {
-                "operationId": "1bbc8782abb5c285c2903931d316b6a2",
-                "responses": {
-                    "200": {
-                        "description": "On récupère tous les produits/articles pour la page d'accueil"
                     }
                 }
             }

@@ -56,18 +56,25 @@ class Api extends \Core\Controller
      * @throws Exception
      */
 
-    /**
-     * @OA\Get(
-     *     path="/search",
-     *     @OA\Response(response="200", description="On recherche dans la liste des villes")
-     * )
-     */
-    public function CitiesAction()
+/**
+ * @OA\Get(
+ *     path="/api/cities",
+ *     @OA\Parameter(
+ *         name="query",
+ *         in="query",
+ *         description="Requête de recherche",
+ *         required=true,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Response(response="200", description="On recherche dans la liste des villes")
+ * )
+ */
+    public function Cities()
     {
-
         $cities = Cities::search($_GET['query']);
 
         header('Content-Type: application/json');
-        echo json_encode($cities);
+        // echo json_encode($cities);
+        return $cities;
     }
 }
