@@ -85,7 +85,7 @@ FROM git as prod
 FROM git as preprod
 
     # Changer de branche
-    RUN git checkout preprod && git pull
+    RUN git checkout release && git pull
   
     # Installer les dépendances Node.js
     RUN npm install
