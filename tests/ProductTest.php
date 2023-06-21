@@ -1,10 +1,12 @@
 <?php
 use PHPUnit\Framework\TestCase;
+use GuzzleHttp\Client;
 
 class ProductTest extends TestCase
 {
     public function testIndexAction()
     {
+        print_r("\nIndex Produit\n"); 
         $client = new Client();
 
 
@@ -19,7 +21,8 @@ class ProductTest extends TestCase
 
         $statusCode = $response->getStatusCode();
         $this->assertEquals(200, $statusCode);
-        var_dump($result); 
+        print_r("Attendu: 200\n"); 
+        print_r("Obtenu: " . $statusCode . "\n"); 
         print_r($log); 
     }
 
