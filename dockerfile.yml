@@ -70,7 +70,6 @@ FROM base as git
     RUN git fetch
     
     # Ajouter les fichiers du projet
-    ADD ./App/Config.php /var/www/html/App/Config.php
     ADD ./public/storage /var/www/html/public/storage
     ADD ./.env /var/www/html/.env
 
