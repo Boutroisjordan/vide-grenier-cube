@@ -24,7 +24,10 @@ class Flash
     {
         if (Session::exists($key)) {
             $session = Session::get($key);
-            Session::delete($key);
+            // Don't delete key if it's crucial for account page.
+            if (!in_array($key, ['user_id', 'username'])) {
+                Session::delete($key);
+            }
             return $session;
         } elseif (!empty($value)) {
             return (Session::put($key, $value));
