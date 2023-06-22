@@ -23,30 +23,49 @@ class Product extends \Core\Controller
      *     @OA\Response(response="200", description="Méthode post du produit")
      * )
      */
-    public function indexAction()
+    public function index()
     {
-
         if (isset($_POST['submit'])) {
-
             try {
                 $f = $_POST;
 
-                // TODO: Validation
+                $errors = $this->validateFormData($f);
+                if (count($errors) === 0) {
+                    $f['user_id'] = $_SESSION['user']['id'];
+                    $id = Articles::save($f);
 
-                $f['user_id'] = $_SESSION['user']['id'];
-                $id = Articles::save($f);
+                    $pictureName = Upload::uploadFile($_FILES['picture'], $id);
 
-                $pictureName = Upload::uploadFile($_FILES['picture'], $id);
+                    Articles::attachPicture($id, $pictureName);
 
-                Articles::attachPicture($id, $pictureName);
-
-                header('Location: /product/' . $id);
+                    header('Location: /product/' . $id);
+                    exit;
+                } else {
+                    $_SESSION['form_errors'] = $errors;
+                    header('Location: /product');
+                    exit;
+                }
             } catch (\Exception $e) {
                 var_dump($e);
             }
         }
 
         View::renderTemplate('Product/Add.html');
+    }
+
+    private function validateFormData($formData): array
+    {
+        $errors = [];
+
+        if (empty($formData['name'])) {
+            $errors['name'] = 'Name is required.';
+        }
+
+        if (empty($formData['description'])) {
+            $errors['description'] = 'Description is required.';
+        }
+
+        return $errors;
     }
 
     /**
@@ -70,7 +89,7 @@ class Product extends \Core\Controller
      * )
      */
 
-    public function showAction()
+    public function show()
     {
         $id = $this->route_params['id'];
 

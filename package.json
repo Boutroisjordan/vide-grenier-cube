@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "sass --no-source-map style/main.scss public/style/main.css",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "docker-compose kill && APP_ENV=dev docker-compose up --build",
+    "start:prod": "docker-compose kill && APP_ENV=prod docker-compose up --build",
+    "start:preprod": "docker-compose kill && APP_ENV=preprod docker-compose up --build"
   },
   "author": "",
   "license": "ISC",
