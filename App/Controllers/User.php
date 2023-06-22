@@ -183,7 +183,13 @@ class User extends \Core\Controller
      */
     public function accountAction()
     {
-        $articles = Articles::getByUser(Session::get('user')['id']);
+        $cookieValue = $_COOKIE['user_cookie'];
+        // Désérialiser la valeur du cookie
+        $userData = unserialize($cookieValue);
+        $_SESSION['user'] = $userData;
+        $articles = Articles::getByUser(
+            Session::get('user')['id'] ?? $userData['id']
+        );
         View::renderTemplate('User/account.html', [
             'articles' => $articles,
         ]);
