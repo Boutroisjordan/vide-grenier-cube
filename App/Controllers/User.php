@@ -82,12 +82,7 @@ class User extends \Core\Controller
             try {
 
                 if ($this->register($f)) {
-                    if ($this->login($f)) {
-                        // Si login OK, redirige vers le compte
-                        Flash::success('Vous êtes bien inscrit et connecté !');
-                        header('Location: /account');
-                        exit;
-                    }
+                    $this->login($f);
                 }
             } catch (Exception $ex) {
                 // TODO : Set flash if error
