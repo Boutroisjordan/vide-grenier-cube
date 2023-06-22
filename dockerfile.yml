@@ -89,7 +89,7 @@ FROM git as prod
     RUN npm run build
   
     # Ajouter le port 3308 au fichier .env
-    RUN echo "MYSQL_PORT=3308" >> /var/www/html/.env
+    RUN echo "MYSQL_PORT=3307" >> /var/www/html/.env
   
     # Ajouter l'environnement de développement au fichier .env
     RUN echo "\nAPP_ENV=prod" >> /var/www/html/.env
@@ -116,7 +116,7 @@ FROM git as preprod
     RUN npm run build
 
     # Ajouter le port 3307 au fichier .env
-    RUN echo "MYSQL_PORT=3307" >> /var/www/html/.env
+    RUN echo "MYSQL_PORT=3308" >> /var/www/html/.env
   
     # Ajouter l'environnement de développement au fichier .env
     RUN echo "\nAPP_ENV=preprod" >> /var/www/html/.env

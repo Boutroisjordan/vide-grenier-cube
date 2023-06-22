@@ -9,11 +9,11 @@
     "start:dev": "docker-compose kill && APP_PORT=8080 MYSQL_PORT=3306 APP_ENV=dev docker-compose -p vide_grenier_dev up --build",
     "start:dev:d": "docker-compose kill && APP_PORT=8080 MYSQL_PORT=3306 APP_ENV=dev docker-compose -p vide_grenier_dev up -d --build",
 
-    "start:prod": "docker-compose kill && APP_PORT=8081 MYSQL_PORT=3308 APP_ENV=prod docker-compose -p vide_grenier_prod up --build",
-    "start:prod:d": "docker-compose kill && APP_PORT=8081 MYSQL_PORT=3308 APP_ENV=prod docker-compose -p vide_grenier_prod up -d --build",
+    "start:prod": "docker-compose kill && APP_PORT=8082 MYSQL_PORT=3308 APP_ENV=prod docker-compose -p vide_grenier_prod up --build",
+    "start:prod:d": "docker-compose kill && APP_PORT=8082 MYSQL_PORT=3308 APP_ENV=prod docker-compose -p vide_grenier_prod up -d --build",
 
-    "start:prep": "docker-compose kill && APP_PORT=8082 MYSQL_PORT=3307 APP_ENV=preprod docker-compose -p vide_grenier_preprod up --build",
-    "start:prep:d": "docker-compose kill && APP_PORT=8082 MYSQL_PORT=3307 APP_ENV=preprod docker-compose -p vide_grenier_preprod up -d --build",
+    "start:prep": "docker-compose kill && APP_PORT=8081 MYSQL_PORT=3307 APP_ENV=preprod docker-compose -p vide_grenier_preprod up --build",
+    "start:prep:d": "docker-compose kill && APP_PORT=8081 MYSQL_PORT=3307 APP_ENV=preprod docker-compose -p vide_grenier_preprod up -d --build",
 
     "test": "./vendor/bin/phpunit tests",
     "build:api": "./vendor/bin/openapi --output ./public/swagger.json  ./App/Controllers"
