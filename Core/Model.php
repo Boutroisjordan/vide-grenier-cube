@@ -3,7 +3,6 @@
 namespace Core;
 
 use PDO;
-use App\Config;
 
 /**
  * Base model
@@ -16,17 +15,16 @@ abstract class Model
     /**
      * Get the PDO database connection
      *
-     * @return mixed
+     * @return PDO|null
      */
-    protected static function getDB()
+    protected static function getDB(): ?PDO
     {
         static $db = null;
 
-        if ($db === null) {
-            $dsn = 'mysql:host=' . Config::DB_HOST . ';dbname=' . Config::DB_NAME . ';charset=utf8';
-            $db = new PDO($dsn, Config::DB_USER, Config::DB_PASSWORD);
 
-            // Throw an Exception when an error occurs
+        if ($db === null) {
+            $dsn = 'mysql:host=mySql_' . $_ENV['APP_ENV'] . ';dbname=' . $_ENV['MYSQL_DATABASE'] . ';charset=utf8;port=' . $_ENV['MYSQL_PORT'];
+            $db = new PDO($dsn, $_ENV['MYSQL_USER'], $_ENV['MYSQL_PASSWORD']);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
 

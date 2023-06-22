@@ -4,7 +4,8 @@
           "ext-pdo": "*",
           "ext-json": "*",
             "zircote/swagger-php": "^4.7",
-        "guzzlehttp/guzzle": "^7.7"
+        "guzzlehttp/guzzle": "^7.7",
+        "vlucas/phpdotenv": "^5.5"
     },
     "autoload": {
         "psr-4": {

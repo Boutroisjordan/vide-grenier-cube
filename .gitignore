@@ -9,3 +9,5 @@ vendor
 .env
 /App/Config.php
 /data/
+/.env.preprod
+/.env.dev

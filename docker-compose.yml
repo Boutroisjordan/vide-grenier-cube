@@ -1,10 +1,9 @@
 version: '3.9'
 
-
 services:
   mySql:
     image: mysql:8.0.33
-    container_name: mySql
+    container_name: mySql_${APP_ENV}
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -12,9 +11,9 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "3306:3306"
+      - ${MYSQL_PORT}:3306
     volumes:
-      - ./data/mysql:/var/lib/mysql
+      - ./data/mysql_${APP_ENV}:/var/lib/mysql
       - ./sql:/docker-entrypoint-initdb.d
 
   apache:
@@ -22,8 +21,14 @@ services:
         context: .
         dockerfile: dockerfile.yml
         target: ${APP_ENV}
-    container_name: apache
+    container_name: apache_${APP_ENV}
+    environment:
+      - APP_ENV
+      - APP_PORT
+      - MYSQL_PORT
+    volumes:
+      - ./public/storage:/var/www/html/public/storage
     ports:
-      - "8080:80"
+      - ${APP_PORT}:80
     depends_on:
       - mySql
