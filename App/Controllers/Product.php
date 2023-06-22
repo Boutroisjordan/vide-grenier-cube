@@ -31,7 +31,7 @@ class Product extends \Core\Controller
             try {
                 $f = $_POST;
 
-                // TODO: Validation
+                // TODO: Validationgit 
 
                 $f['user_id'] = $_SESSION['user']['id'];
                 $id = Articles::save($f);
