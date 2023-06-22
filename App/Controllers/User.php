@@ -167,11 +167,9 @@ class User extends \Core\Controller
      */
     public function accountAction()
     {
-        $articles = Articles::getByUser($_SESSION['user']['id']);
-        $flashMessages = Flash::getMessages();
+        $articles = Articles::getByUser(Session::get('user')['id']);
         View::renderTemplate('User/account.html', [
             'articles' => $articles,
-            'flashMessages' => $flashMessages
         ]);
     }
 
