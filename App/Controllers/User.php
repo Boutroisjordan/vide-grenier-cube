@@ -6,16 +6,17 @@ use App\Config;
 use App\Model\UserRegister;
 use App\Models\Articles;
 use App\Utility\Hash;
+use App\Utility\Flash;
 use App\Utility\Session;
 use \Core\View;
 use Exception;
-use http\Env\Request;
-use http\Exception\InvalidArgumentException;
+use OpenApi\Annotations\Flow;
 
 /**
  * User controller
  */
 class User extends \Core\Controller
+
 {
 
     /**
@@ -35,72 +36,74 @@ class User extends \Core\Controller
      *     @OA\Response(response="200", description="Connexion de l'utilisateur")
      * )
      */
-
     public function loginAction()
     {
         if (isset($_POST['submit'])) {
             $f = $_POST;
+            if (!filter_var($f['email'], FILTER_VALIDATE_EMAIL)) {
+                Flash::danger('Email invalide');
+                throw new Exception('Email invalide');
+            }
+            if (empty($f['password']) || empty($f['email'])) {
+                Flash::danger('Veuillez remplir tous les champs');
+                throw new Exception('Veuillez remplir tous les champs');
+            }
 
-            // TODO: Validation
+            try {
 
-            $this->login($f);
-
-            // Si login OK, redirige vers le compte
-            header('Location: /account');
+                if ($this->login($f)) {
+                    // Si login OK, redirige vers le compte
+                    header('Location: /account');
+                    exit;
+                }
+            } catch (Exception $ex) {
+                // TODO : Set flash if error
+                Flash::danger($ex->getMessage());
+            }
         }
+        $flashMessages = Flash::getMessages();
 
-        View::renderTemplate('User/login.html');
+        View::renderTemplate('User/login.html', [
+            'flashMessages' => $flashMessages
+        ]);
     }
-
-    /**
-     * Page de création de compte
-     */
-
-    /**
-     * @OA\Post(
-     *     path="/login",
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             type="object",
-     *              @OA\Property(property="username", type="string"),
-     *             @OA\Property(property="email", type="string"),
-     *             @OA\Property(property="password", type="string"),
-     *             @OA\Property(property="password-check", type="string"),
-     *         ),
-     *     ),
-     *     @OA\Response(response="200", description="Connexion de l'utilisateur")
-     * )
-     */
 
     public function registerAction()
     {
         if (isset($_POST['submit'])) {
             $f = $_POST;
-
             if ($f['password'] !== $f['password-check']) {
-                // TODO: Gestion d'erreur côté utilisateur
+                Flash::danger('Les mots de passe ne correspondent pas');
             }
-
+            if (!filter_var($f['email'], FILTER_VALIDATE_EMAIL)) {
+                Flash::danger('Email invalide');
+            }
             // validation
+            try {
 
-            $registrationSuccess = $this->register($f);
-            if ($registrationSuccess) {
-                $loginSuccess = $this->login($f);
-                if ($loginSuccess) {
-                    // Si login OK, redirige vers le compte
-                    header('Location: /account');
+                if ($this->register($f)) {
+                    if ($this->login($f)) {
+                        // Si login OK, redirige vers le compte
+                        Flash::success('Vous êtes bien inscrit et connecté !');
+                        header('Location: /account');
+                        exit;
+                    }
                 }
+            } catch (Exception $ex) {
+                // TODO : Set flash if error
+                Flash::danger($ex->getMessage());
             }
         }
 
-        View::renderTemplate('User/register.html');
+        $flashMessages = Flash::getMessages();
+
+        View::renderTemplate('User/register.html', [
+            'flashMessages' => $flashMessages
+        ]);
     }
 
+    //...
 
-    /*
-     * Fonction privée pour enregister un utilisateur
-     */
     private function register($data)
     {
         try {
@@ -114,12 +117,13 @@ class User extends \Core\Controller
                 "password" => Hash::generate($data['password'], $salt),
                 "salt" => $salt
             ]);
+            Flash::success('Vous êtes bien inscrit !');
             // dd($user)
             return $userID !== false;
         } catch (Exception $ex) {
             // TODO : Set flash if error : utiliser la fonction en dessous
-            /* Utility\Flash::danger($ex->getMessage());*/
-            return false;
+            Flash::danger($ex->getMessage());
+            throw $ex;
         }
     }
 
@@ -142,18 +146,14 @@ class User extends \Core\Controller
     private function login($data)
     {
         try {
-            if (!isset($data['email'])) {
-                throw new Exception('Email is required.');
+            if (empty($data['email']) || empty($data["password"])) {
+                Flash::danger('Email ou mot de passe non fourni');
+                return false;
             }
-
-            if (!isset($data['password'])) {
-                throw new Exception('Password is required.');
-            }
-
 
             $user = \App\Models\User::getByLogin($data['email']);
-
-            if (Hash::generate($data['password'], $user['salt']) !== $user['password']) {
+            if (!$user || Hash::generate($data['password'], $user['salt']) !== $user['password']) {
+                Flash::danger('Email ou mot de passe incorrect');
                 return false;
             }
 
@@ -165,7 +165,6 @@ class User extends \Core\Controller
                 'id' => $user['id'],
                 'username' => $user['username'],
             );
-
             $_SESSION['user'] = $userData;
             // Sérialiser les données de l'utilisateur
             if (isset($data['remember-me'])) {
@@ -183,13 +182,30 @@ class User extends \Core\Controller
            
             return true;
         } catch (Exception $ex) {
-            // TODO : Set flash if error
-            /* Utility\Flash::danger($ex->getMessage());*/
-            return false;
+            // TODO : Set flash if error : utiliser la fonction en dessous
+            Flash::danger($ex->getMessage());
+            throw $ex;
         }
     }
 
 
+
+
+
+    /**
+     * Affiche la page du compte
+     */
+    public function accountAction()
+    {
+        $articles = Articles::getByUser($_SESSION['user']['id']);
+        $flashMessages = Flash::getMessages();
+        View::renderTemplate('User/account.html', [
+            'articles' => $articles,
+            'flashMessages' => $flashMessages
+        ]);
+    }
+
+    /*
     /**
      * Logout: Delete cookie and session. Returns true if everything is okay,
      * otherwise turns false.
