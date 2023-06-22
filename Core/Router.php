@@ -15,8 +15,8 @@ class Router
         $this->add('login', ['controller' => 'User', 'action' => 'login']);
         $this->add('register', ['controller' => 'User', 'action' => 'register']);
         $this->add('logout', ['controller' => 'User', 'action' => 'logout']);
-        $this->add('account', ['controller' => 'User', 'action' => 'account']);
-        $this->add('product', ['controller' => 'Product', 'action' => 'index']);
+        $this->add('account', ['controller' => 'User', 'action' => 'account' , "private" => true]);
+        $this->add('product', ['controller' => 'Product', 'action' => 'index', "private" => true]);
         $this->add('product/{id:\d+}', ['controller' => 'Product', 'action' => 'show']);
         $this->add('{controller}/{action}');
     }
