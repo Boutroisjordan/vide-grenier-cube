@@ -98,22 +98,6 @@ class User extends \Core\Controller
     }
 
 
-
-
-
-
-    /**
-     * Affiche la page du compte
-     */
-    public function accountAction()
-    {
-        $articles = Articles::getByUser($_SESSION['user']['id']);
-
-        View::renderTemplate('User/account.html', [
-            'articles' => $articles
-        ]);
-    }
-
     /*
      * Fonction privée pour enregister un utilisateur
      */
@@ -138,6 +122,22 @@ class User extends \Core\Controller
             return false;
         }
     }
+
+
+
+
+    /**
+     * Affiche la page du compte
+     */
+    public function accountAction()
+    {
+        $articles = Articles::getByUser($_SESSION['user']['id']);
+
+        View::renderTemplate('User/account.html', [
+            'articles' => $articles
+        ]);
+    }
+
 
     private function login($data)
     {

@@ -14,20 +14,24 @@
         "version": "1.0"
     },
     "paths": {
-        "/product": {
+        "/api/products": {
             "get": {
-                "operationId": "f9f26b3adbbcf25f2ea1403284fd1881",
-                "responses": {
-                    "200": {
-                        "description": "On récupère tous les produits/articles pour la page d'accueil"
+                "operationId": "e35803db7dc3263e3622538255f4c890",
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Tri des produits",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
                     }
-                }
-            },
-            "post": {
-                "operationId": "5087812e438e5a4da938f89ace9ad772",
+                ],
                 "responses": {
                     "200": {
-                        "description": "Méthode post du produit"
+                        "description": "Liste des produits"
                     }
                 }
             }
@@ -49,6 +53,16 @@
                 "responses": {
                     "200": {
                         "description": "On recherche dans la liste des villes"
+                    }
+                }
+            }
+        },
+        "/product": {
+            "post": {
+                "operationId": "5087812e438e5a4da938f89ace9ad772",
+                "responses": {
+                    "200": {
+                        "description": "Méthode post du produit"
                     }
                 }
             }

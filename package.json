@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "sass --no-source-map style/main.scss public/style/main.css",
-    "test": "./vendor/bin/phpunit tests"
+    "test": "./vendor/bin/phpunit tests",
+    "build:api": "./vendor/bin/openapi --output ./public/swagger.json  ./App/Controllers"
   },
   "author": "",
   "license": "ISC",

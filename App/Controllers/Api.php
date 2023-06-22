@@ -34,12 +34,19 @@ class Api extends \Core\Controller
      * @throws Exception
      */
 
-    /**
-     * @OA\Get(
-     *     path="/product",
-     *     @OA\Response(response="200", description="On récupère tous les produits/articles pour la page d'accueil")
-     * )
-     */
+/**
+ * @OA\Get(
+ *     path="/api/products",
+ *     @OA\Parameter(
+ *         name="sort",
+ *         in="query",
+ *         description="Tri des produits",
+ *         required=true,
+ *         @OA\Schema(type="integer", example=20)
+ *     ),
+ *     @OA\Response(response="200", description="Liste des produits")
+ * )
+ */
     public function ProductsAction()
     {
         $query = $_GET['sort'];
@@ -74,7 +81,6 @@ class Api extends \Core\Controller
         $cities = Cities::search($_GET['query']);
 
         header('Content-Type: application/json');
-        // echo json_encode($cities);
-        return $cities;
+        echo json_encode($cities);
     }
 }
