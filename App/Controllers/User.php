@@ -130,19 +130,6 @@ class User extends \Core\Controller
 
 
 
-    /**
-     * Affiche la page du compte
-     */
-    public function accountAction()
-    {
-        $articles = Articles::getByUser($_SESSION['user']['id']);
-
-        View::renderTemplate('User/account.html', [
-            'articles' => $articles
-        ]);
-    }
-
-
     private function login($data)
     {
         try {
@@ -170,16 +157,15 @@ class User extends \Core\Controller
             if (isset($data['remember-me'])) {
                 $cookieValue = serialize($userData);
 
-            // Définir les autres valeurs du cookie
-            $cookieName = 'user_cookie';
-            $cookieExpiration = time() + (86400 * 30); // Expire dans 30 jours (86400 secondes par jour)
-            $cookiePath = '/'; // Le cookie est disponible sur l'ensemble du site
+                // Définir les autres valeurs du cookie
+                $cookieName = 'user_cookie';
+                $cookieExpiration = time() + (86400 * 30); // Expire dans 30 jours (86400 secondes par jour)
+                $cookiePath = '/'; // Le cookie est disponible sur l'ensemble du site
 
-            // Enregistrer le cookie
-            setcookie($cookieName, $cookieValue, $cookieExpiration, $cookiePath);
-
+                // Enregistrer le cookie
+                setcookie($cookieName, $cookieValue, $cookieExpiration, $cookiePath);
             }
-           
+
             return true;
         } catch (Exception $ex) {
             // TODO : Set flash if error : utiliser la fonction en dessous
@@ -264,9 +250,10 @@ class User extends \Core\Controller
         return true;
     }
 
-    public static function LoginWithCookie() {
+    public static function LoginWithCookie()
+    {
 
-        if(isset($_COOKIE["user_cookie"]) && !isset($_SESSION['user'])) {
+        if (isset($_COOKIE["user_cookie"]) && !isset($_SESSION['user'])) {
 
             $cookieValue = $_COOKIE['user_cookie'];
 
@@ -274,7 +261,6 @@ class User extends \Core\Controller
             $userData = unserialize($cookieValue);
 
             $_SESSION['user'] = $userData;
-
         }
     }
 }
