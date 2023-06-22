@@ -10,21 +10,25 @@ use App\Utility\TwigLoader;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
+use Dotenv\Dotenv;
 
 session_start();
 
 /**
  * Composer
  */
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 define("ROOT", realpath(dirname(__FILE__) . "/../") . "/");
 define("APP_ROOT", ROOT . "App/");
 define("APP_CONFIG_FILE", APP_ROOT . "ConfigurationApp.php");
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+
 $loader = new Filesystemloader(dirname(__DIR__) . '/App/Views');
 $twig = new Environment($loader, ['debug' => true,]);
 $twig->addExtension(new DebugExtension());
 TwigLoader::setTwigEnvironment($twig);
 
+$dotenv = Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->load();
 
 /**
  * Error and Exception handling
