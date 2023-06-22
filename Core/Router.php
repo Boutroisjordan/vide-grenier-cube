@@ -1,6 +1,7 @@
 <?php
 
 namespace Core;
+use App\Controllers\User;
 
 /**
  * Router
@@ -19,6 +20,7 @@ class Router
         $this->add('product', ['controller' => 'Product', 'action' => 'index', "private" => true]);
         $this->add('product/{id:\d+}', ['controller' => 'Product', 'action' => 'show']);
         $this->add('{controller}/{action}');
+        User::LoginWithCookie();
     }
     /**
      * Associative array of routes (the routing table)

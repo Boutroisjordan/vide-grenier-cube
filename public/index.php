@@ -20,7 +20,6 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 $loader = new Filesystemloader(dirname(__DIR__) . '/App/Views');
 $twig = new Environment($loader, ['debug' => true,]);
 $twig->addExtension(new DebugExtension());
-
 TwigLoader::setTwigEnvironment($twig);
 
 

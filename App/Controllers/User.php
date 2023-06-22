@@ -149,6 +149,8 @@ class User extends \Core\Controller
             if (!isset($data['password'])) {
                 throw new Exception('Password is required.');
             }
+
+
             $user = \App\Models\User::getByLogin($data['email']);
 
             if (Hash::generate($data['password'], $user['salt']) !== $user['password']) {
@@ -159,11 +161,26 @@ class User extends \Core\Controller
             // to remained logged in on the login form.
             // https://github.com/andrewdyer/php-mvc-register-login/blob/development/www/app/Model/UserLogin.php#L86
 
-            $_SESSION['user'] = array(
+            $userData = array(
                 'id' => $user['id'],
                 'username' => $user['username'],
             );
 
+            $_SESSION['user'] = $userData;
+            // Sérialiser les données de l'utilisateur
+            if (isset($data['remember-me'])) {
+                $cookieValue = serialize($userData);
+
+            // Définir les autres valeurs du cookie
+            $cookieName = 'user_cookie';
+            $cookieExpiration = time() + (86400 * 30); // Expire dans 30 jours (86400 secondes par jour)
+            $cookiePath = '/'; // Le cookie est disponible sur l'ensemble du site
+
+            // Enregistrer le cookie
+            setcookie($cookieName, $cookieValue, $cookieExpiration, $cookiePath);
+
+            }
+           
             return true;
         } catch (Exception $ex) {
             // TODO : Set flash if error
@@ -215,8 +232,33 @@ class User extends \Core\Controller
 
         session_destroy();
 
+        $cookieName = 'user_cookie';
+
+        // Définir une date d'expiration passée pour le cookie
+        $cookieExpiration = time() - 3600; // Par exemple, une heure avant l'heure actuelle
+
+        // Supprimer le cookie en définissant une nouvelle valeur avec une date d'expiration passée
+        setcookie($cookieName, '', $cookieExpiration);
+
+        // Facultatif : supprimer également le cookie de la superglobale $_COOKIE
+        unset($_COOKIE[$cookieName]);
+
         header("Location: /");
 
         return true;
+    }
+
+    public static function LoginWithCookie() {
+
+        if(isset($_COOKIE["user_cookie"]) && !isset($_SESSION['user'])) {
+
+            $cookieValue = $_COOKIE['user_cookie'];
+
+            // Désérialiser la valeur du cookie
+            $userData = unserialize($cookieValue);
+
+            $_SESSION['user'] = $userData;
+
+        }
     }
 }
