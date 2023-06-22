@@ -82,7 +82,25 @@ class User extends \Core\Controller
             try {
 
                 if ($this->register($f)) {
-                    $this->login($f);
+                    if ($this->login($f)) {
+                        $user = \App\Models\User::getByLogin($f['email']);
+                        $userData = array(
+                            'id' => $user['id'],
+                            'username' => $user['username'],
+                        );
+                        $_SESSION['user'] = $userData;
+                        $cookieValue = serialize($userData);
+
+                        // Définir les autres valeurs du cookie
+                        $cookieName = 'user_cookie';
+                        $cookieExpiration = time() + (86400 * 30); // Expire dans 30 jours (86400 secondes par jour)
+                        $cookiePath = '/'; // Le cookie est disponible sur l'ensemble du site
+                        // Enregistrer le cookie
+                        setcookie($cookieName, $cookieValue, $cookieExpiration, $cookiePath);
+                        // Si login OK, redirige vers le compte
+                        header('Location: /account');
+                        exit;
+                    }
                 }
             } catch (Exception $ex) {
                 // TODO : Set flash if error
