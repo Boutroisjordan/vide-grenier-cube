@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "sass --no-source-map style/main.scss public/style/main.css",
+    "start:dev": "docker-compose kill && APP_ENV=dev docker-compose up --build",
+    "start:prod": "docker-compose kill && APP_ENV=prod docker-compose up --build",
+    "start:preprod": "docker-compose kill && APP_ENV=preprod docker-compose up --build",
     "test": "./vendor/bin/phpunit tests",
     "build:api": "./vendor/bin/openapi --output ./public/swagger.json  ./App/Controllers"
   },

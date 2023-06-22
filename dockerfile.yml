@@ -6,97 +6,106 @@ FROM php:8.1-apache as base
     curl \
     zip \
     unzip
-  
-  # Installer Composer    
-  RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-  
-  # Copier la configuration Apache personnalisée
-  ADD apache-config.conf /etc/apache2/sites-available/000-default.conf
-  
-  # Activer le module rewrite
-RUN a2enmod rewrite
-  
-  # Activer le module mysql
-RUN apt-get update && apt-get install -y \
-libfreetype6-dev \
-libjpeg62-turbo-dev \
-libpng-dev \
-&& docker-php-ext-configure gd --with-freetype --with-jpeg \
-&& docker-php-ext-install -j$(nproc) gd \
-&& docker-php-ext-install pdo_mysql \
-&& docker-php-ext-install mysqli && docker-php-ext-enable mysqli
-RUN php -m | grep pdo_mysql
-  
-  # Installer Node.js
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt-get install -y nodejs
-  
-  # Set the working directory
-WORKDIR /var/www/html
+    
+    # Installer Composer    
+    RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    
+    # Copier la configuration Apache personnalisée
+    ADD apache-config.conf /etc/apache2/sites-available/000-default.conf
+    
+    # Activer le module rewrite
+    RUN a2enmod rewrite
+    
+    # Activer le module mysql
+    RUN apt-get update && apt-get install -y \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-install pdo_mysql \
+    && docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+    RUN php -m | grep pdo_mysql
+    
+    # Installer Node.js
+    RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
+    RUN apt-get install -y nodejs
+    
+    # Set the working directory
+    WORKDIR /var/www/html
 
 FROM base as dev
   
-  # Installer les dépendances Node.js
-ADD package.json /var/www/html
-RUN npm install
-  
-  # Installer les dépendances PHP avec Composer
-ADD composer*.json /var/www/html
-RUN composer update
+    # Installer les dépendances Node.js
+    ADD package.json /var/www/html
+    RUN npm install
+    
+    # Installer les dépendances PHP avec Composer
+    ADD composer*.json /var/www/html
+    RUN composer update
+    
+    # Définir les permissions pour les fichiers du projet
+    ADD . /var/www/html
+
+    # Build le SCSS
+    RUN npm run build
   
   # Définir les permissions pour les fichiers du projet
-ADD . /var/www/html
-  
-  # Définir les permissions pour les fichiers du projet
-RUN chown -R www-data:www-data /var/www/html
-  
-  # Exposer le port 80 (Apache)
-EXPOSE 80
+    RUN chown -R www-data:www-data /var/www/html
+    
+    # Exposer le port 80 (Apache)
+    EXPOSE 80
 
 FROM base as git
   
-  # Cloner le projet
-RUN git clone https://github.com/Boutroisjordan/vide-grenier-cube.git /var/www/html
-RUN git config --global --add safe.directory /var/www/html
-RUN git fetch
-  
-  # Ajouter les fichiers du projet
-ADD ./App/Config.php /var/www/html/App/Config.php
-ADD ./public/storage /var/www/html/public/storage
-ADD ./.env /var/www/html/.env
+    # Cloner le projet
+    RUN git clone https://github.com/Boutroisjordan/vide-grenier-cube.git /var/www/html
+    RUN git config --global --add safe.directory /var/www/html
+    RUN git fetch
+    
+    # Ajouter les fichiers du projet
+    ADD ./App/Config.php /var/www/html/App/Config.php
+    ADD ./public/storage /var/www/html/public/storage
+    ADD ./.env /var/www/html/.env
 
 FROM git as prod
   
-  # Changer de branche
-RUN git checkout main && git pull
-  
-  # Installer les dépendances Node.js
-RUN npm install
-  
-  # Installer les dépendances PHP avec Composer
-RUN composer update
-RUN composer dump-autoload
-  
-  # Définir les permissions pour les fichiers du projet
-RUN chown -R www-data:www-data /var/www/html
-  
-  # Exposer le port 80 (Apache)
-EXPOSE 80
+    # Changer de branche
+    RUN git checkout main && git pull
+    
+    # Installer les dépendances Node.js
+    RUN npm install
+    
+    # Installer les dépendances PHP avec Composer
+    RUN composer update
+    RUN composer dump-autoload
 
-FROM git as preprod
-  
-  # Changer de branche
-RUN git checkout release && git pull
-  
-  # Installer les dépendances Node.js
-RUN npm install
-  
-  # Installer les dépendances PHP avec Composer
-RUN composer update
-RUN composer dump-autoload
+    # Build le SCSS
+    RUN npm run build
   
   # Définir les permissions pour les fichiers du projet
-RUN chown -R www-data:www-data /var/www/html
-  
-  # Exposer le port 80 (Apache)
-EXPOSE 80
+    RUN chown -R www-data:www-data /var/www/html
+    
+    # Exposer le port 80 (Apache)
+    EXPOSE 80
+    
+FROM git as preprod
+    
+    # Changer de branche
+    RUN git checkout release && git pull
+    
+    # Installer les dépendances Node.js
+    RUN npm install
+    
+    # Installer les dépendances PHP avec Composer
+    RUN composer update
+    RUN composer dump-autoload
+
+    # Build le SCSS
+    RUN npm run build
+    
+    # Définir les permissions pour les fichiers du projet
+    RUN chown -R www-data:www-data /var/www/html
+    
+    # Exposer le port 80 (Apache)
+    EXPOSE 80
