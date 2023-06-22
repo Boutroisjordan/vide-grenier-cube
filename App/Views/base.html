@@ -115,7 +115,7 @@
     <div class="mobile-menu">
       <div class="mobile-menu-head">
         <a href="#" class="mobile-menu-close"></a>
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="/">
           <img
             src="images/logo.png"
             alt="Vide Grenier en ligne name"
@@ -129,23 +129,37 @@
           <span>Déposer une annonce</span>
         </a>
 
-        <div class="mobile-menu-list">
-          <ul>
-            <li>
-              <a href="/">
-                <i class="cv cvicon-cv-playlist"></i>
-                <p>Accueil</p>
-              </a>
-            </li>
-            <li>
-              <a href="/account">
-                <i class="cv cvicon-cv-play-circle"></i>
-                <p>Mon compte</p>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <a href="#" class="btn mobile-menu-logout">Déconnexion</a>
+        {% if user is not null %}
+          <div class="mobile-menu-list">
+            <ul>
+              <li>
+                <a href="/">
+                  <i class="cv cvicon-cv-playlist"></i>
+                  <p>Accueil</p>
+                </a>
+              </li>
+              <li>
+                <a href="/account">
+                  <i class="cv cvicon-cv-play-circle"></i>
+                  <p>Mon compte</p>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <a href="/logout" class="btn mobile-menu-logout">Déconnexion</a>
+        {% else %}
+          <div class="mobile-menu-list">
+            <ul>
+              <li>
+                <a href="/">
+                  <i class="cv cvicon-cv-playlist"></i>
+                  <p>Accueil</p>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <a href="/login" class="btn mobile-menu-logout">Connexion</a>
+        {% endif %}
       </div>
     </div>
 
@@ -156,7 +170,7 @@
           <div class="container padding-def">
             <div class="col-lg-1 col-sm-2 col-xs-12 footer-logo">
               <!--<a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="Project name" class="logo" /></a>-->
-              <a class="navbar-brand" href="index.html">
+              <a class="navbar-brand" href="/">
                 <img
                   src="/images/logo.png"
                   alt="Vide Grenier en ligne"
@@ -180,9 +194,9 @@
             <div class="col-lg-offset-1 col-lg-3 col-sm-4 col-xs-12">
               <div class="f-last-line">
                 <div class="f-icon pull-left">
-                  <a href="#"><i class="fa fa-facebook-square"></i></a>
-                  <a href="#"><i class="fa fa-twitter"></i></a>
-                  <a href="#"><i class="fa fa-google-plus"></i></a>
+                  <a href="https://www.facebook.com/auvidegrenierofficiel/"><i class="fa fa-facebook-square"></i></a>
+                  <a href="https://twitter.com/auvidegrenierfr?lang=fr"><i class="fa fa-twitter"></i></a>
+                  <a href="https://www.instagram.com/auvidegrenier.fr/?hl=fr"><i class="fa fa-instagram"></i></a>
                 </div>
                 <div class="clearfix"></div>
               </div>
